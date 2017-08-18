@@ -1,0 +1,5 @@
+[Mysql]
+Password = "root"
+Username = "root"
+Addr = "127.0.0.1:3306"
+DBName = "serverdb"

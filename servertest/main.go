@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"toml"
 )
 
 const (
@@ -12,25 +14,22 @@ var (
 	mux = http.NewServeMux()
 )
 
-func main1() {
+func main() {
+	loadConfig()
+	//  fmt.Println(regexp.Match("H.* ", []byte("Hello World!")))
+	initDB()
 	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		Error(err)
 	}
 }
-func main() {
-	Debug(calulate(2, 3, div))
-}
 
-func calulate(n, m int, calu calType) int {
-	return calu(n, m)
-}
-
-type calType func(int, int) int
-
-func add(n, m int) int {
-	return n + m
-}
-func div(n, m int) int {
-	return n * m
+func loadConfig() {
+	var err error
+	var tomlPath string = "./output/server.toml"
+	if _, err = toml.DecodeFile(tomlPath, &ServerConfig); err != nil {
+		Error(err)
+		os.Exit(-1)
+	}
+	Debug(ServerConfig)
 }
